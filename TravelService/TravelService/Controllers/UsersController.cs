@@ -89,6 +89,9 @@ namespace TravelService.Controllers
             Users tempUser = await _context.Users.Where(u => u.UserName == users.UserName).FirstOrDefaultAsync();
             if (tempUser != null) { return Ok("failed"); }
 
+            Role role = _context.Role.Find(users.RoleId);
+            users.Role = role;
+
             _context.Users.Add(users);
             await _context.SaveChangesAsync();
 

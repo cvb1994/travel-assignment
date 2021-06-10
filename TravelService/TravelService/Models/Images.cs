@@ -10,7 +10,7 @@ namespace TravelService.Models
     public partial class Images
     {
         public int ImageId { get; set; }
-        public byte[] ImageLink { get; set; }
+        public string ImageLink { get; set; }
         public int? PlaceId { get; set; }
 
         public virtual Places Place { get; set; }

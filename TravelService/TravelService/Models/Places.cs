@@ -20,6 +20,7 @@ namespace TravelService.Models
         public string PlaceName { get; set; }
         public string Title { get; set; }
         public string Info { get; set; }
+        public string ImageLink { get; set; }
         public int? UserId { get; set; }
 
         public virtual Users User { get; set; }
