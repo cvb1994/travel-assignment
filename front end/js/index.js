@@ -4,13 +4,23 @@ $(document).ready(function () {
         url: "https://localhost:49155/api/places",
         dataType: "json",
         success : function(data){
+            $.each(data, function (index, obj) {
+                var name = obj.placeName;
+                var title = obj.title;
+                var info = obj.info;
+                var image = obj.imageLink;
+                var id = obj.placeId;
 
+                var path = "detail.html?placeId="+id;
+
+                loadModel(path,image,title,info,name);
+            })
         }
     })
 })
 
 
-function loadModel(path, img, title, content){
+function loadModel(path, img, title, content, name){
     var container = document.getElementById("contentSection");
 
     var modal_stage1 = document.createElement("div");
@@ -37,7 +47,11 @@ function loadModel(path, img, title, content){
     title.setAttribute("href", path);
     title.innerHTML = title;
 
+    var place = document.createElement("span");
+    place.innerHTML = name;
+
     modal_title.appendChild(title);
+    modal_title.appendChild(place);
 
     var content = document.createElement("p");
     content.innerHTML = content;
