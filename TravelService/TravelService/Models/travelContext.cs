@@ -10,7 +10,7 @@ namespace TravelService.Models
 {
     public partial class travelContext : DbContext
     {
-
+        
         public travelContext(DbContextOptions<travelContext> options)
             : base(options)
         {
@@ -23,6 +23,7 @@ namespace TravelService.Models
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Comment>(entity =>
@@ -31,11 +32,6 @@ namespace TravelService.Models
                     .IsRequired()
                     .HasMaxLength(45)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.Image)
-                    .WithMany(p => p.Comment)
-                    .HasForeignKey(d => d.ImageId)
-                    .HasConstraintName("FK__Comment__ImageId__02084FDA");
 
                 entity.HasOne(d => d.Place)
                     .WithMany(p => p.Comment)
@@ -94,11 +90,6 @@ namespace TravelService.Models
             modelBuilder.Entity<Rating>(entity =>
             {
                 entity.Property(e => e.Rating1).HasColumnName("Rating");
-
-                entity.HasOne(d => d.Image)
-                    .WithMany(p => p.Rating)
-                    .HasForeignKey(d => d.ImageId)
-                    .HasConstraintName("FK__Rating__ImageId__06CD04F7");
 
                 entity.HasOne(d => d.Place)
                     .WithMany(p => p.Rating)

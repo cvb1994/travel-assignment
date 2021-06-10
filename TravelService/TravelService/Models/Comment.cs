@@ -12,10 +12,8 @@ namespace TravelService.Models
         public int CommentId { get; set; }
         public string Content { get; set; }
         public int? PlaceId { get; set; }
-        public int? ImageId { get; set; }
         public int? UserId { get; set; }
 
-        public virtual Images Image { get; set; }
         public virtual Places Place { get; set; }
         public virtual Users User { get; set; }
     }

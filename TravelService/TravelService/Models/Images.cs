@@ -9,18 +9,10 @@ namespace TravelService.Models
 {
     public partial class Images
     {
-        public Images()
-        {
-            Comment = new HashSet<Comment>();
-            Rating = new HashSet<Rating>();
-        }
-
         public int ImageId { get; set; }
         public byte[] ImageLink { get; set; }
         public int? PlaceId { get; set; }
 
         public virtual Places Place { get; set; }
-        public virtual ICollection<Comment> Comment { get; set; }
-        public virtual ICollection<Rating> Rating { get; set; }
     }
 }
