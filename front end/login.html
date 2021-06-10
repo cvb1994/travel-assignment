@@ -112,16 +112,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
  				
 				<div style="width: 550px ;margin-left: auto;margin-right: auto;margin-bottom: 47px; margin-top: 47px;">
 				<form>
+					<div id="Message" class="alert alert-danger hiddenField" role="alert"></div>
 					<div class="form-group">
-					  <label for="exampleInputEmail1">User Name</label>
-					  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
-					  <small id="emailHelp" class="form-text text-muted">We'll never share your username with anyone else.</small>
+						<label for="username">User Name</label>
+						<input type="text" class="form-control" id="username" aria-describedby="username" placeholder="Enter username">
+						<small id="usernameHelp" class="form-text text-muted">Note*: Do not use offensive name.</small>
 					</div>
 					<div class="form-group">
-					  <label for="exampleInputPassword1">Password</label>
-					  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-					</div>				
-					<button type="submit" class="btn btn-primary">Submit</button>
+						<label for="pass">Password</label>
+						<input type="password" class="form-control" id="pass" placeholder="Password">
+					</div>
+					<button type="button" id="login" class="btn btn-primary">Submit</button>
 				  </form>
 				</div>
 			</div>
@@ -207,5 +208,35 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			});
 	</script>
 <!-- //here ends scrolling icon -->
+<script>
+	$(document).ready(function () {
+		$('#login').click(function(){
+			var name = $('#username').val();
+			var password = $('#pass').val();
+
+			var data = {
+				"UserName" : name,
+				"UserPass" : password
+			}
+
+			$.ajax({
+				type : "post",
+				url: "https://localhost:49157/api/token",
+				contentType: "application/json; charset=utf-8",
+				data: JSON.stringify(data),
+				success : function(responseToken){
+					console.log(responseToken);
+
+					localStorage.setItem('token', responseToken);
+					window.location.href = 'index.html';
+				},
+				error: function (errormessage) {
+					alert(errormessage.responseText);
+				}
+			})
+		});
+	})
+
+</script>
 </body>
 </html>

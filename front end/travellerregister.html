@@ -109,23 +109,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<h2>Register</h2>
 					<p>Register as a new Traveller User here.</p>
 				</div>
- 				
+
 				<div style="width: 550px ;margin-left: auto;margin-right: auto;margin-bottom: 47px; margin-top: 47px;">
 				<form>
+					<div id="Message" class="alert alert-danger hiddenField" role="alert"></div>
 					<div class="form-group">
-					  <label for="exampleInputEmail1">User Name</label>
-					  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
-					  <small id="emailHelp" class="form-text text-muted">Note*: Do not use offensive name.</small>
+					  <label for="username">User Name</label>
+					  <input type="text" class="form-control" id="username" aria-describedby="username" placeholder="Enter username">
+					  <small id="usernameHelp" class="form-text text-muted">Note*: Do not use offensive name.</small>
 					</div>
 					<div class="form-group">
-					  <label for="exampleInputPassword1">Password</label>
-					  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+					  <label for="pass">Password</label>
+					  <input type="password" class="form-control" id="pass" placeholder="Password">
 					</div>
 					<div class="form-group">
-						<label for="exampleInputPassword1">Re-Enter Password</label>
-						<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Re-Enter your Password">
+						<label for="passConfirm">Re-Enter Password</label>
+						<input type="password" class="form-control" id="passConfirm" placeholder="Re-Enter your Password">
 					  </div>				
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="button" id="register" class="btn btn-primary">Submit</button>
 					<div style="float: right;"><a href="guideregister.html">Want to Register as a Guide User ?</a></div>
 				  </form>
 				</div>
@@ -212,5 +213,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			});
 	</script>
 <!-- //here ends scrolling icon -->
+<script src="js/travelRegister.js"></script>
 </body>
 </html>

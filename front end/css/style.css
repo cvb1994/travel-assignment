@@ -57,6 +57,11 @@ body a:hover{
 ::-webkit-input-placeholder{
 	color:#CDEF49 !important;
 }
+
+.hiddenField {
+	display: none
+}
+
 .header-bottom{
 	margin:2em 0;
 }
@@ -306,7 +311,7 @@ body a:hover{
 #slider3-pager a ,#slider2-pager a,#slider4-pager a{
   padding: 0;
 }
-#slider3-pager li,#slider4-pager li,#slider2-pager li,{
+#slider3-pager li,#slider4-pager li,#slider2-pager li {
 	display:inline-block;
 }
 .rslides {
