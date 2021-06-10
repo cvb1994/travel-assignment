@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.ajax({
         type : "GET",
-        url: "https://localhost:49155/api/places",
+        url: "https://localhost:49163/api/places",
         dataType: "json",
         success : function(data){
             $.each(data, function (index, obj) {
@@ -12,6 +12,7 @@ $(document).ready(function () {
                 var id = obj.placeId;
 
                 var path = "detail.html?placeId="+id;
+                console.log(path);
 
                 loadModel(path,image,title,info,name);
             })

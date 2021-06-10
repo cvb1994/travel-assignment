@@ -12,9 +12,8 @@ $(document).ready(function () {
 
         $.ajax({
             type : "POST",
-            url: "https://localhost:49155/api/Users",
+            url: "https://localhost:49163/api/Users",
             contentType: "application/json; charset=utf-8",
-            dataType: "json",
             data: JSON.stringify(data),
             success : function(responseText){
                 if(responseText === "success"){

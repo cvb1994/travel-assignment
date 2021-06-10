@@ -220,12 +220,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 			$.ajax({
 				type : "post",
-				url: "https://localhost:49157/api/token",
+				url: "https://localhost:49163/api/token",
 				contentType: "application/json; charset=utf-8",
 				data: JSON.stringify(data),
 				success : function(responseToken){
-					console.log(responseToken);
-
 					localStorage.setItem('token', responseToken);
 					window.location.href = 'index.html';
 				},
