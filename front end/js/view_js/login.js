@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     $.ajax({
         type : "GET",
-        url: "https://localhost:49155/api/users/"+user,
+        url: "https://localhost:49161/api/users/"+user,
         //dataType: "json",
         headers: {Authorization: 'Bearer '+ token_string},
         success : function(data){

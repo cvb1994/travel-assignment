@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -77,17 +78,41 @@ namespace TravelService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Places>> PostPlaces(Places places)
+        public ActionResult<string> PostPlaces()
         {
-            Places tempPlace = await _context.Places.Where(u => u.PlaceName ==places.PlaceName).FirstOrDefaultAsync();
-            if (tempPlace != null) { return Ok("failed"); }
-
-            Users users = _context.Users.Find(places.UserId);
-            places.User = users;
-
-            _context.Places.Add(places);
-            await _context.SaveChangesAsync();
+            string name = null;
+            string title = null;
+            string info = null;
+            int userId = 0;
             
+
+            var dict = HttpContext.Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString());
+            foreach (string key in HttpContext.Request.Form.Keys)
+            {
+                if (key.Equals("placeName")) { name = dict[key]; }
+                if (key.Equals("title")) { title = dict[key]; }
+                if (key.Equals("info")) { info = dict[key]; }
+                if (key.Equals("userId")) { userId = int.Parse(dict[key]); }
+            }
+            Users users = _context.Users.Find(userId);
+            Places place = new Places();
+
+            var images = HttpContext.Request.Form.Files;
+            foreach (var file in images)
+            {
+                Stream filestream = file.OpenReadStream();
+                var base64 = ConvertToBase64(filestream);
+                place.ImageLink = base64;
+            }
+            
+            place.PlaceName = name;
+            place.Title = title;
+            place.Info = info;
+            place.User = users;
+
+            _context.Places.Add(place);
+            _context.SaveChangesAsync();
+
             return Ok("success");
             
         }
@@ -111,6 +136,19 @@ namespace TravelService.Controllers
         private bool PlacesExists(int id)
         {
             return _context.Places.Any(e => e.PlaceId == id);
+        }
+
+        public string ConvertToBase64(Stream stream)
+        {
+            byte[] bytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                bytes = memoryStream.ToArray();
+            }
+
+            string base64 = Convert.ToBase64String(bytes);
+            return base64;
         }
     }
 }

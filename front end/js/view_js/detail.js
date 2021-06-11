@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     $.ajax({
         type : "GET",
-        url: "https://localhost:49155/api/places/"+placeId,
+        url: "https://localhost:49161/api/places/"+placeId,
         dataType: "json",
         success : function(data){
             var title = obj.title;
@@ -18,7 +18,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url: "https://localhost:49155/api/images/"+placeId,
+        url: "https://localhost:49161/api/images/"+placeId,
         dataType: "json",
         success : function(data){
             $.each(data, function (index, obj) {
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
         $.ajax({
             type : "POST",
-            url: "https://localhost:49155/api/comment",
+            url: "https://localhost:49161/api/comment",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success : function(responseText){
@@ -80,7 +80,7 @@ function loadImage(link) {
 function loadComment() {
     $.ajax({
         type : "GET",
-        url: "https://localhost:49155/api/comment/"+placeId,
+        url: "https://localhost:49161/api/comment/"+placeId,
         dataType: "json",
         success : function(data){
             $.each(data, function (index, obj) {

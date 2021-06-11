@@ -50,11 +50,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
 				<div class="header-bottom-right" style="width: 400px;">
 					<span class="menu">MENU</span>
-					<ul class="nav1">
-						<li><a href="index.html">HOME</a></li>
+					<ul class="nav1" id="navBar">
+						<li class="cap"><a href="index.html">HOME</a></li>
 						<li><a href="index.html">BLOG</a></li>
-						<li><a href="travellerregister.html">REGISTER</a></li>
-						<li><a href="login.html">LOGIN</a></li>
+						<li id="registerForm"><a href="travellerregister.html">REGISTER</a></li>
+						<li id="loginForm"><a href="login.html">LOGIN</a></li>
 					</ul>
 					<!-- script for menu -->
 						<script> 
@@ -110,18 +110,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
  				
 				<div style="width: 769px ;margin-left: auto;margin-right: auto;margin-bottom: 47px; margin-top: 47px;">
-				<form id="placeForm">
+				<form id="placeForm" method="POST" enctype="multipart/form-data">
+					<input type="hidden" id="userId" name="userId"/>
 					<div class="form-group">
 					  <label for="Placename">Place Name</label>
-					  <input type="text" class="form-control" id="Placename"  name="name" placeholder="Enter Place name">
+					  <input type="text" class="form-control" id="placeName"  name="placeName" placeholder="Enter Place name">
 					</div>
 					<div class="form-group">
-					  <label for="Placetitle">Title</label>
-					  <input type="text" class="form-control" id="Placetitle" name="title" placeholder="Title">
+					  <label for="title">Title</label>
+					  <input type="text" class="form-control" id="title" name="title" placeholder="Title">
 					</div>				
 					<div class="form-group">
-						<label for="Placeinfo">Info</label>
-						<textarea id="tutorial" class="form-control" id="Placeinfo" name="info" placeholder="Place info" rows="12" cols="40"></textarea>
+						<label for="info">Info</label>
+						<textarea id="tutorial" class="form-control" id="info" name="info" placeholder="Place info" rows="12" cols="40"></textarea>
 					  </div>
 					  <div class="form-group">
 						<label for="Placeimage">Image Cover</label>
@@ -213,12 +214,36 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			});
 	</script>
 	<script type="text/javascript" src="js/view_js/login.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
 	<script>
 		$(document).ready(function () {
+			var userId = localStorage.getItem("userId");
+			$("#userId").val(userId);
+
+			// $("#submitButton").click(function () {
+			// 	$("#placeForm").ajaxForm({url: 'https://localhost:49161/api/places', type: 'post'});
+			// 	location.reload();
+			// })
+
+
 			$("#submitButton").click(function () {
-				$("#placeForm").ajaxForm({url: 'https://localhost:49155/api/places', type: 'post'});
-				location.reload();
+				var form = new FormData($("#placeForm")[0]);
+				$.ajax({
+					url: "https://localhost:49161/api/places",
+					type: "POST",
+					dataType: 'text',
+					data: form,
+					processData: false,
+					contentType: false,
+					success: function(result){
+						console.log("success");
+					},
+					error: function(er){
+						console.log("failed");
+					}
+				});
 			})
+
 
 		})
 	</script>
