@@ -18,7 +18,7 @@ namespace TravelService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
+    [Authorize]
     public class TokenController : ControllerBase
     {
         private readonly travelContext _context;
@@ -30,6 +30,7 @@ namespace TravelService.Controllers
             _configuration = config;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> checkUser(Users userdata)
         {

@@ -218,6 +218,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<script>
 		$(document).ready(function () {
 			var userId = localStorage.getItem("userId");
+			var tokenString = localStorage.getItem("token");
 			$("#userId").val(userId);
 
 			// $("#submitButton").click(function () {
@@ -229,14 +230,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			$("#submitButton").click(function () {
 				var form = new FormData($("#placeForm")[0]);
 				$.ajax({
-					url: "https://travelservice2021.azurewebsites.net/api/places",
+					url: "https://localhost:5001//api/places",
 					type: "POST",
+					headers: {Authorization: 'Bearer '+ tokenString},
 					dataType: 'text',
 					data: form,
 					processData: false,
 					contentType: false,
 					success: function(result){
 						console.log("success");
+						window.location.href = 'index.html';
 					},
 					error: function(er){
 						console.log("failed");

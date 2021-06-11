@@ -15,7 +15,7 @@ namespace TravelService.Controllers
 {
     [Route("api/images")]
     [ApiController]
-    [Authorize(Roles ="Guide")]
+    [Authorize(Roles = "Guide")]
     public class ImagesController : ControllerBase
     {
         public IHostingEnvironment hostingEnvironment;
@@ -29,6 +29,14 @@ namespace TravelService.Controllers
         [HttpPost]
         public ActionResult<string> Images()
         {
+            string placeId = null;
+            var dict = HttpContext.Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString());
+            foreach (string key in HttpContext.Request.Form.Keys)
+            {
+                if (key.Equals("placeIdString")) { placeId = dict[key]; }
+            }
+
+
             try
             {
                 var files = HttpContext.Request.Form.Files;
@@ -42,8 +50,9 @@ namespace TravelService.Controllers
                         Images images = new Images();
                         images.ImageLink = base64.ToString();
 
-                        //Places place = _context.Places.Find(placeId);
-                        //images.Place = place;
+                        Places place = _context.Places.Find(int.Parse(placeId));
+                        images.Place = place;
+
                         _context.Images.Add(images);
                         _context.SaveChanges();
                     }
@@ -63,10 +72,9 @@ namespace TravelService.Controllers
         [HttpGet]
         [Route("place/{placeId}")]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<Images>>> GetImages(int id)
+        public async Task<ActionResult<IEnumerable<Images>>> GetImages(int placeId)
         {
-            var result = await _context.Images.Where(i => i.PlaceId == id).ToListAsync();
-            return result;
+            return await _context.Images.Where(i => i.PlaceId == placeId).ToListAsync();
         }
 
         public string ConvertToBase64(Stream stream)

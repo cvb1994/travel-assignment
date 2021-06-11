@@ -12,7 +12,7 @@ $(document).ready(function () {
 
         $.ajax({
             type : "POST",
-            url: "https://travelservice2021.azurewebsites.net/api/Users",
+            url: "https://localhost:5001/api/Users",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success : function(responseText){

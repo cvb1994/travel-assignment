@@ -1460,7 +1460,7 @@ p.est span{
 	width:100%;
 	margin:1.5em 0;
 	}
-.leave-a-comment input[type="submit"]{
+.leave-a-comment input[type="button"]{
 	background:#9FC703;
 	color:#fff;
 	font-size:20px;
@@ -1481,7 +1481,7 @@ p.est span{
 	padding: 10px 0;
 	
 	}
-.leave-a-comment input[type="submit"]:hover{
+.leave-a-comment input[type="button"]:hover{
 	background:#5D710E;
 	color:#9FC703;
 	text-decoration:none;

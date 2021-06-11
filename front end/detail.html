@@ -127,6 +127,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 	<div class="banner-bdy sig">
 		<div class="container">
+			<button><a id="toimage">Add Image</a></button>
 			<div class="single">
 				<div class="sing-img-text">
 					<div class="sing-img-text1">
@@ -135,27 +136,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						</p>
 						<div class="gallery gal">
 							<div class="gallery-grids" id="gallery">
-								<div class="gallery-grid">
-									<a class="fancybox" href="images/6-.jpg" data-fancybox-group="gallery"><img
-											src="images/6.jpg" class="img-style row6" alt=""><span> </span></a>
-								</div>
-								<div class="gallery-grid1">
-									<a class="fancybox" href="images/8-.jpg" data-fancybox-group="gallery"><img
-											src="images/8.jpg" class="img-style row6" alt=""><span> </span></a>
-								</div>
-								<div class="gallery-grid">
-									<a class="fancybox" href="images/5-.jpg" data-fancybox-group="gallery"><img
-											src="images/5.jpg" class="img-style row6" alt=""><span> </span></a>
-								</div>
-								<div class="gallery-grid1">
-									<a class="fancybox" href="images/9-.jpg" data-fancybox-group="gallery"><img
-											src="images/9.jpg" class="img-style row6" alt=""><span> </span></a>
-								</div>
-								<div class="gallery-grid">
-									<a class="fancybox" href="images/10-.jpg" data-fancybox-group="gallery"><img
-											src="images/10.jpg" class="img-style row6" alt=""><span> </span></a>
-								</div>
-								<div class="clearfix"> </div>
+
 							</div>
 						</div>
 						<div class="list">
@@ -173,7 +154,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							</span>
 						</div>
 						<div class="com">
-							<h3>Comments</h3>
+							<h4>Comments</h4>
 							<ul class="media-list" id="contain">
 
 							</ul>
@@ -188,7 +169,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<textarea id="content" type="text" onfocus="this.value = '';"
 							onblur="if (this.value == '') {this.value = 'Type Your Comment here...';}"
 							required="">Type Your Comment here...</textarea>
-						<input type="submit" value="Add Comment" id="sendComment">
+						<input type="button" value="Add Comment" id="sendComment">
 					</form>
 				</div>
 			</div>
@@ -308,6 +289,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</script>
 
 	<script src="js/view_js/detail.js"></script>
+<script>
+	var url_string = window.location + "";
+	var url = new URL(url_string);
+	var placeIdString = url.searchParams.get("placeId");
+	var placeId = Number.parseInt(placeIdString);
+
+	var anchor = document.getElementById("toimage");
+	anchor.setAttribute("href","formimage.html?placeId="+placeId);
+
+</script>
 
 </body>
 

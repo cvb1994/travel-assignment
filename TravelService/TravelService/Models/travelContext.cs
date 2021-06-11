@@ -23,6 +23,7 @@ namespace TravelService.Models
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Comment>(entity =>
@@ -34,40 +35,38 @@ namespace TravelService.Models
                 entity.HasOne(d => d.Place)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.PlaceId)
-                    .HasConstraintName("FK__Comment__PlaceId__6754599E");
+                    .HasConstraintName("FK__Comment__PlaceId__7E37BEF6");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Comment__UserId__68487DD7");
+                    .HasConstraintName("FK__Comment__UserId__7F2BE32F");
             });
 
             modelBuilder.Entity<Images>(entity =>
             {
                 entity.HasKey(e => e.ImageId)
-                    .HasName("PK__Images__7516F70CCB0C6AC1");
+                    .HasName("PK__Images__7516F70C398C1A7C");
 
                 entity.Property(e => e.ImageLink)
                     .IsRequired()
                     .HasColumnName("Image_link")
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                    .HasColumnType("text");
 
                 entity.HasOne(d => d.Place)
                     .WithMany(p => p.Images)
                     .HasForeignKey(d => d.PlaceId)
-                    .HasConstraintName("FK__Images__PlaceId__6477ECF3");
+                    .HasConstraintName("FK__Images__PlaceId__7B5B524B");
             });
 
             modelBuilder.Entity<Places>(entity =>
             {
                 entity.HasKey(e => e.PlaceId)
-                    .HasName("PK__Places__D5222B6E88DC63DF");
+                    .HasName("PK__Places__D5222B6E3C0EF9DF");
 
                 entity.Property(e => e.ImageLink)
                     .HasColumnName("Image_link")
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                    .HasColumnType("text");
 
                 entity.Property(e => e.Info)
                     .IsRequired()
@@ -85,7 +84,7 @@ namespace TravelService.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Places)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Places__UserId__619B8048");
+                    .HasConstraintName("FK__Places__UserId__787EE5A0");
             });
 
             modelBuilder.Entity<Rating>(entity =>
@@ -95,12 +94,12 @@ namespace TravelService.Models
                 entity.HasOne(d => d.Place)
                     .WithMany(p => p.Rating)
                     .HasForeignKey(d => d.PlaceId)
-                    .HasConstraintName("FK__Rating__PlaceId__6B24EA82");
+                    .HasConstraintName("FK__Rating__PlaceId__02084FDA");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Rating)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Rating__UserId__6C190EBB");
+                    .HasConstraintName("FK__Rating__UserId__02FC7413");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -114,7 +113,7 @@ namespace TravelService.Models
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__Users__1788CC4CB247A5D0");
+                    .HasName("PK__Users__1788CC4CBED9DD0E");
 
                 entity.Property(e => e.UserName)
                     .IsRequired()
@@ -129,7 +128,7 @@ namespace TravelService.Models
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__Users__RoleId__5EBF139D");
+                    .HasConstraintName("FK__Users__RoleId__75A278F5");
             });
 
             OnModelCreatingPartial(modelBuilder);

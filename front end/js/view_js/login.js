@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     $.ajax({
         type : "GET",
-        url: "https://travelservice2021.azurewebsites.net/api/users/"+user,
+        url: "https://localhost:5001/api/users/"+user,
         //dataType: "json",
         headers: {Authorization: 'Bearer '+ token_string},
         success : function(data){

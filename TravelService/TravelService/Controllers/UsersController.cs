@@ -81,7 +81,6 @@ namespace TravelService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [AllowAnonymous]
-        //[EnableCors]
         [HttpPost]
         
         public async Task<IActionResult> PostUsers(Users users)

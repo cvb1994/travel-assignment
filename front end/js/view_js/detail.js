@@ -1,7 +1,9 @@
 var url_string = window.location + "";
 var url = new URL(url_string);
-var placeId = url.searchParams.get("placeId");
-var user = localStorage.getItem("userId");
+var placeIdString = url.searchParams.get("placeId");
+var placeId = Number.parseInt(placeIdString);
+var userIdString = localStorage.getItem("userId");
+var user = Number.parseInt(userIdString);
 
 $(document).ready(function () {
     loadContent();
@@ -13,17 +15,21 @@ $(document).ready(function () {
 
         var data = {
             Content : contentData,
-            PlaceId : Number.parseInt(placeId),
+            PlaceId : placeId,
             UserId : Number.parseInt(user)
         }
 
         $.ajax({
             type : "POST",
-            url: "https://travelservice2021.azurewebsites.net/api/comment",
+            url: "https://localhost:5001/api/comment",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success : function(responseText){
-                console.log(responseText);
+                var contain = document.getElementById("contain");
+                while (contain.firstChild) {
+                    contain.removeChild(contain.lastChild);
+                }
+
                 loadComment();
             }
         })
@@ -33,7 +39,7 @@ $(document).ready(function () {
 function loadContent() {
     $.ajax({
         type : "GET",
-        url: "https://travelservice2021.azurewebsites.net/api/places/"+placeId,
+        url: "https://localhost:5001/api/places/"+placeId,
         dataType: "json",
         success : function(data){
             var title = data.title;
@@ -47,7 +53,7 @@ function loadContent() {
 function loadImage() {
     $.ajax({
         type: "GET",
-        url: "https://travelservice2021.azurewebsites.net/api/images/place/"+placeId,
+        url: "https://localhost:5001/api/images/place/"+placeId,
         dataType: "json",
         success : function(data){
             $.each(data, function (index, obj) {
@@ -62,7 +68,7 @@ function loadImage() {
 function loadComment() {
     $.ajax({
         type : "GET",
-        url: "https://travelservice2021.azurewebsites.net/api/comment/place/"+placeId,
+        url: "https://localhost:5001/api/comment/place/"+placeId,
         dataType: "json",
         success : function(data){
             $.each(data, function (index, obj) {
