@@ -5,7 +5,7 @@ $(document).ready(function () {
 
 $.ajax({
     type : "GET",
-    url: "https://localhost:49161/api/places",
+    url: "https://travelservice2021.azurewebsites.net/api/places",
     dataType: "json",
     success : function(data){
         $.each(data, function (index, obj) {

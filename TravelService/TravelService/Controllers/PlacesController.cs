@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace TravelService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Guide")]
     public class PlacesController : ControllerBase
     {
         private readonly travelContext _context;
@@ -23,6 +25,7 @@ namespace TravelService.Controllers
 
         // GET: api/Places
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Places>>> GetPlaces()
         {
             return await _context.Places.ToListAsync();
@@ -30,6 +33,7 @@ namespace TravelService.Controllers
 
         // GET: api/Places/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Places>> GetPlaces(int id)
         {
             var places = await _context.Places.FindAsync(id);

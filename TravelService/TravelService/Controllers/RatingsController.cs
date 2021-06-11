@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace TravelService.Controllers
 {
     [Route("api/rating")]
     [ApiController]
+    [Authorize]
     public class RatingsController : ControllerBase
     {
         private readonly travelContext _context;
@@ -46,6 +48,7 @@ namespace TravelService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(Roles = "Traveller")]
         public async Task<IActionResult> PutRating(int id, Rating rating)
         {
             if (id != rating.RatingId)
@@ -78,6 +81,7 @@ namespace TravelService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "Traveller")]
         public async Task<ActionResult> PostRating(Rating rating)
         {
             Places place = _context.Places.Find(rating.PlaceId);

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace TravelService.Controllers
 {
     [Route("api/images")]
     [ApiController]
+    [Authorize(Roles ="Guide")]
     public class ImagesController : ControllerBase
     {
         public IHostingEnvironment hostingEnvironment;
@@ -59,9 +61,11 @@ namespace TravelService.Controllers
             }
         }
         [HttpGet]
-        public ActionResult<List<Images>> GetImages()
+        [Route("place/{placeId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<Images>>> GetImages(int id)
         {
-            var result = _context.Images.ToList();
+            var result = await _context.Images.Where(i => i.PlaceId == id).ToListAsync();
             return result;
         }
 

@@ -9,21 +9,21 @@ $(document).ready(function () {
     loadComment();
 
     $('#sendComment').click(function(){
-        var content = $('#content').val();
-
+        var contentData = $('#content').val();
 
         var data = {
-            Content : content,
-            PlaceId : placeId,
-            UserId : user
+            Content : contentData,
+            PlaceId : Number.parseInt(placeId),
+            UserId : Number.parseInt(user)
         }
 
         $.ajax({
             type : "POST",
-            url: "https://localhost:49161/api/comment",
+            url: "https://travelservice2021.azurewebsites.net/api/comment",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success : function(responseText){
+                console.log(responseText);
                 loadComment();
             }
         })
@@ -33,7 +33,7 @@ $(document).ready(function () {
 function loadContent() {
     $.ajax({
         type : "GET",
-        url: "https://localhost:49161/api/places/"+placeId,
+        url: "https://travelservice2021.azurewebsites.net/api/places/"+placeId,
         dataType: "json",
         success : function(data){
             var title = data.title;
@@ -47,7 +47,7 @@ function loadContent() {
 function loadImage() {
     $.ajax({
         type: "GET",
-        url: "https://localhost:49161/api/images/place/"+placeId,
+        url: "https://travelservice2021.azurewebsites.net/api/images/place/"+placeId,
         dataType: "json",
         success : function(data){
             $.each(data, function (index, obj) {
@@ -62,12 +62,12 @@ function loadImage() {
 function loadComment() {
     $.ajax({
         type : "GET",
-        url: "https://localhost:49161/api/comment/place/"+placeId,
+        url: "https://travelservice2021.azurewebsites.net/api/comment/place/"+placeId,
         dataType: "json",
         success : function(data){
             $.each(data, function (index, obj) {
-                var name = obj.username;
-                var content = obj.info;
+                var name = obj.userId;
+                var content = obj.content;
 
                 loadCommentModal(name,content);
             })
@@ -112,7 +112,7 @@ function loadCommentModal(name, content){
 
     var image = document.createElement("img");
     image.setAttribute("class","media-object");
-    image.setAttribute("src","images/11.jpg");
+    image.setAttribute("src","images/user.jpg");
 
     modal_image.appendChild(image);
 
@@ -123,8 +123,11 @@ function loadCommentModal(name, content){
     nameUser.setAttribute("class","media-heading");
     nameUser.innerHTML = name;
 
+    var commentContent = document.createElement("p");
+    commentContent.innerHTML = content;
+
     modal_body.appendChild(nameUser);
-    modal_body.innerHTML = content;
+    modal_body.appendChild(commentContent);
 
     element.appendChild(modal_image);
     element.appendChild(modal_body);

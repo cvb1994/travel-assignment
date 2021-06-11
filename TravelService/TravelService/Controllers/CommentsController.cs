@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace TravelService.Controllers
 {
     [Route("api/comment")]
     [ApiController]
+    [Authorize(Roles = "Traveller")]
     public class CommentsController : ControllerBase
     {
         private readonly travelContext _context;
@@ -23,20 +25,20 @@ namespace TravelService.Controllers
         // GET: api/Comments
         [HttpGet]
         [Route("place/{placeId}")]
-        public List<CommentDTO> GetPlaceComment(int placeId)
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<Comment>>> GetPlaceComment(int placeId)
         {
-            var list =  _context.Comment.Where(c => c.PlaceId == placeId).ToList();
-            List<CommentDTO> tempList = new List<CommentDTO>();
+            //var list =  _context.Comment.Where(c => c.PlaceId == placeId).ToList();
+            //List<CommentDTO> tempList = new List<CommentDTO>();
 
-            foreach (var obj in list)
-            {
-                CommentDTO temp = new CommentDTO();
-                temp.username = obj.User.UserName;
-                temp.info = obj.Content;
-                tempList.Add(temp);
-            }
+            //foreach (var obj in list)
+            //{
+            //    Users user = _context.Users.Find(obj.UserId);
+            //    tempList.Add(new CommentDTO { username = user.UserName, info = obj.Content });
+            //}
 
-            return tempList;
+            //return tempList;
+            return await _context.Comment.Where(c => c.PlaceId == placeId).ToListAsync();
 
         }
 
