@@ -1,33 +1,11 @@
+var url_string = window.location + "";
+var url = new URL(url_string);
+var placeId = url.searchParams.get("placeId");
+var user = localStorage.getItem("userId");
+
 $(document).ready(function () {
-    var url_string = window.location + "";
-    var url = new URL(url_string);
-    var placeId = url.searchParams.get("placeId");
-    var user = localStorage.getItem("userId");
-
-    $.ajax({
-        type : "GET",
-        url: "https://localhost:49161/api/places/"+placeId,
-        dataType: "json",
-        success : function(data){
-            var title = obj.title;
-            var info = obj.info;
-
-            loadModel(title,info);
-        }
-    })
-
-    $.ajax({
-        type: "GET",
-        url: "https://localhost:49161/api/images/"+placeId,
-        dataType: "json",
-        success : function(data){
-            $.each(data, function (index, obj) {
-                var imageUrl = obj.imageLink;
-                loadImage(imageUrl);
-            })
-        }
-    })
-
+    loadContent();
+    loadImage();
     loadComment();
 
     $('#sendComment').click(function(){
@@ -52,45 +30,75 @@ $(document).ready(function () {
     });
 })
 
-function loadModal(title, info) {
-    $(".sing-img-text1 h3").text(title);
-    $(".est").text(info);
+function loadContent() {
+    $.ajax({
+        type : "GET",
+        url: "https://localhost:49161/api/places/"+placeId,
+        dataType: "json",
+        success : function(data){
+            var title = data.title;
+            var info = data.info;
+
+            loadModal(title,info);
+        }
+    })
 }
 
-function loadImage(link) {
-    var contain = document.getElementById("gallery");
-
-    var element = document.createElement("div");
-    element.setAttribute("class", "gallery-grid");
-
-    var href = document.createElement("a");
-    href.setAttribute("class","fancybox");
-    href.setAttribute("href",link);
-    href.setAttribute("data-fancybox-group","gallery");
-
-    var image = document.createElement("img");
-    image.setAttribute("src", "../"+link);
-    image.setAttribute("class","img-style row6");
-
-    href.appendChild(image);
-    element.appendChild(href);
-    contain.appendChild(element);
+function loadImage() {
+    $.ajax({
+        type: "GET",
+        url: "https://localhost:49161/api/images/place/"+placeId,
+        dataType: "json",
+        success : function(data){
+            $.each(data, function (index, obj) {
+                var imageUrl = obj.imageLink;
+                loadImageModal(imageUrl);
+            })
+        }
+    })
 }
+
 
 function loadComment() {
     $.ajax({
         type : "GET",
-        url: "https://localhost:49161/api/comment/"+placeId,
+        url: "https://localhost:49161/api/comment/place/"+placeId,
         dataType: "json",
         success : function(data){
             $.each(data, function (index, obj) {
                 var name = obj.username;
                 var content = obj.info;
 
-                loadModel(path,image,title,info,name);
+                loadCommentModal(name,content);
             })
         }
     })
+}
+
+function loadModal(title, info) {
+    $(".sing-img-text1 h3").text(title);
+    $(".est").text(info);
+}
+
+function loadImageModal(link) {
+    var contain = document.getElementById("gallery");
+
+    var element = document.createElement("div");
+    element.setAttribute("class", "gallery-grid");
+    var srcPath = "data:image/png;base64,"+link;
+
+    var href = document.createElement("a");
+    href.setAttribute("class","fancybox");
+    href.setAttribute("href",srcPath);
+    href.setAttribute("data-fancybox-group","gallery");
+
+    var image = document.createElement("img");
+    image.setAttribute("src", srcPath);
+    image.setAttribute("class","img-style row6");
+
+    href.appendChild(image);
+    element.appendChild(href);
+    contain.appendChild(element);
 }
 
 function loadCommentModal(name, content){
@@ -122,8 +130,8 @@ function loadCommentModal(name, content){
     element.appendChild(modal_body);
 
     contain.appendChild(element);
+}
 
-
-
+function loadRating() {
 
 }
