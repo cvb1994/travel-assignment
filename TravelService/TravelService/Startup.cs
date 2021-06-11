@@ -53,6 +53,7 @@ namespace TravelService
             {
                 c.AddPolicy("AllowOrigin", op => op.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,9 +64,12 @@ namespace TravelService
                 app.UseDeveloperExceptionPage();
             }
 
+
             app.UseStaticFiles();
 
             app.UseCors(op => op.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            app.UseMvc();
 
             app.UseHttpsRedirection();
 
