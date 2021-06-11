@@ -23,9 +23,21 @@ namespace TravelService.Controllers
         // GET: api/Comments
         [HttpGet]
         [Route("place/{placeId}")]
-        public async Task<ActionResult<IEnumerable<Comment>>> GetPlaceComment(int placeId)
+        public List<CommentDTO> GetPlaceComment(int placeId)
         {
-            return await _context.Comment.Where(c => c.PlaceId == placeId).ToListAsync();
+            var list =  _context.Comment.Where(c => c.PlaceId == placeId).ToList();
+            List<CommentDTO> tempList = new List<CommentDTO>();
+
+            foreach (var obj in list)
+            {
+                CommentDTO temp = new CommentDTO();
+                temp.username = obj.User.UserName;
+                temp.info = obj.Content;
+                tempList.Add(temp);
+            }
+
+            return tempList;
+
         }
 
 

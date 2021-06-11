@@ -63,6 +63,7 @@ namespace TravelService
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
 
             app.UseCors(op => op.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 

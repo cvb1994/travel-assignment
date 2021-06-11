@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ using TravelService.Models;
 
 namespace TravelService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/images")]
     [ApiController]
     public class ImagesController : ControllerBase
     {
@@ -21,7 +22,9 @@ namespace TravelService.Controllers
         {
             hostingEnvironment = hostingEnv;
             _context = db;
-        }       
+        }
+        
+        [HttpPost]
         public ActionResult<string> Images()
         {
             try
@@ -31,15 +34,14 @@ namespace TravelService.Controllers
                 {
                     foreach (var file in files)
                     {
-                        FileInfo fi = new FileInfo(file.FileName);
-                        var newfilename = "Image_" + DateTime.Now.TimeOfDay.Milliseconds + fi.Extension;
-                        var path = Path.Combine("", hostingEnvironment.ContentRootPath + "\\Images\\" + newfilename);
-                        using (var stream = new FileStream(path, FileMode.Create))
-                        {
-                            file.CopyTo(stream);
-                        }
+                        Stream filestream = file.OpenReadStream();
+                        var base64 = ConvertToBase64(filestream);
+
                         Images images = new Images();
-                        images.ImageLink = "\\Images\\" + newfilename;
+                        images.ImageLink = base64.ToString();
+
+                        //Places place = _context.Places.Find(placeId);
+                        //images.Place = place;
                         _context.Images.Add(images);
                         _context.SaveChanges();
                     }
@@ -61,6 +63,19 @@ namespace TravelService.Controllers
         {
             var result = _context.Images.ToList();
             return result;
+        }
+
+        public string ConvertToBase64(Stream stream)
+        {
+            byte[] bytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                bytes = memoryStream.ToArray();
+            }
+
+            string base64 = Convert.ToBase64String(bytes);
+            return base64;
         }
     }
 }

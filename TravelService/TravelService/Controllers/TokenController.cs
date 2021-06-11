@@ -54,7 +54,8 @@ namespace TravelService.Controllers
                     var token = new JwtSecurityToken(_configuration["Jwt:Issuer"], _configuration["Jwt:Audience"],
                         claims, DateTime.UtcNow, DateTime.UtcNow.AddDays(1), signin);
 
-                    return Ok(new JwtSecurityTokenHandler().WriteToken(token));
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+                    return Ok(user.UserId+"-"+tokenString);
                 }
                 else
                 {

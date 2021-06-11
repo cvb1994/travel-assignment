@@ -110,24 +110,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
  				
 				<div style="width: 769px ;margin-left: auto;margin-right: auto;margin-bottom: 47px; margin-top: 47px;">
-				<form>
+				<form id="placeForm">
 					<div class="form-group">
 					  <label for="Placename">Place Name</label>
-					  <input type="name" class="form-control" id="Placename"  placeholder="Enter Place name">				  
+					  <input type="text" class="form-control" id="Placename"  name="name" placeholder="Enter Place name">
 					</div>
 					<div class="form-group">
 					  <label for="Placetitle">Title</label>
-					  <input type="text" class="form-control" id="Placetitle" placeholder="Title">
+					  <input type="text" class="form-control" id="Placetitle" name="title" placeholder="Title">
 					</div>				
 					<div class="form-group">
 						<label for="Placeinfo">Info</label>
-						<textarea id="tutorial" class="form-control" id="Placeinfo" placeholder="Place info" rows="12" cols="40"></textarea>
+						<textarea id="tutorial" class="form-control" id="Placeinfo" name="info" placeholder="Place info" rows="12" cols="40"></textarea>
 					  </div>
 					  <div class="form-group">
 						<label for="Placeimage">Image Cover</label>
 						<input type="file" class="form-control" id="Placeimage" name="image">
 					  </div>
-					<button type="submit" class="btn btn-primary">Submit</button>
+					<button type="button" id="submitButton" class="btn btn-primary">Submit</button>
 				  </form>
 				</div>
 			</div>
@@ -211,6 +211,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			$().UItoTop({ easingType: 'easeOutQuart' });
 								
 			});
+	</script>
+	<script type="text/javascript" src="js/view_js/login.js"></script>
+	<script>
+		$(document).ready(function () {
+			$("#submitButton").click(function () {
+				$("#placeForm").ajaxForm({url: 'https://localhost:49155/api/places', type: 'post'});
+				location.reload();
+			})
+
+		})
 	</script>
 <!-- //here ends scrolling icon -->
 </body>

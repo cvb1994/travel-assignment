@@ -112,14 +112,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</div>
  				
 				<div style="width: 880px ;margin-left: auto;margin-right: auto;margin-bottom: 47px; margin-top: 47px;">
-					<form method="POST" name="form-example-1" id="form-example-1" enctype="multipart/form-data">
+					<form method="POST" name="sum" id="imageSubmit" enctype="multipart/form-data">
 					
 						<div class="input-field form-group">
 							<label class="active">Photos</label>
-							<div class="input-images-1" style="padding-top: .5rem;"></div>
+							<div class="input-images-1" name="imageUpload" style="padding-top: .5rem;"></div>
 						</div>
 					     
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
 					
 					</form>
 				</div>
@@ -206,10 +206,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			});
 	</script>
 <!-- //here ends scrolling icon -->
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/image-uploader.min.js"></script>
 <script>
 	$('.input-images-1').imageUploader();
 </script>
+<script>
+	$(document).ready(function () {
+		$("#submitButton").click(function () {
+			$("#imageSubmit").ajaxForm({url: 'https://localhost:49157/api/images', type: 'post'});
+			location.reload();
+		})
+
+	})
+</script>
+<script type="text/javascript" src="js/view_js/login.js"></script>
 </body>
 </html>
