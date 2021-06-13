@@ -36,6 +36,15 @@ $(document).ready(function () {
             
         })
     });
+
+    $('#addImageButton').click(function(){
+        if(role = "Guide"){
+            window.location.href="formimage.html?placeId="+placeId;
+        } else {
+            alert("Please sign in with an Guide account.")
+        }
+        
+    })
 })
 
 function loadContent() {
@@ -46,8 +55,14 @@ function loadContent() {
         success : function(data){
             var title = data.title;
             var info = data.info;
+            // var imageList = data.images;
+            // console.log(imageList);
 
             loadModal(title,info);
+            // $.each(imageList, function (index, obj) {
+            //     var imageUrl = obj.imageLink;
+            //     loadImageModal(imageUrl);
+            // })
         }
     })
 }
@@ -62,6 +77,8 @@ function loadImage() {
                 var imageUrl = obj.imageLink;
                 loadImageModal(imageUrl);
             })
+
+            clearFixModalImage();
         },
         error: function (errormessage){
             console.log(errormessage.responseText);
@@ -77,8 +94,9 @@ function loadComment() {
         dataType: "json",
         success : function(data){
             $.each(data, function (index, obj) {
-                var name = obj.userId;
-                var content = obj.content;
+                var name = obj.username;
+                var content = obj.info;
+                var commentId = obj.commnetId;
 
                 loadCommentModal(name,content);
             })
@@ -109,6 +127,7 @@ function loadImageModal(link) {
     var image = document.createElement("img");
     image.setAttribute("src", srcPath);
     image.setAttribute("class","img-style row6");
+    image.setAttribute("height","250px");
 
     href.appendChild(image);
     element.appendChild(href);
@@ -188,4 +207,14 @@ function rating(){
             console.log("failed");
         }
     });
+}
+
+function clearFixModalImage(){
+    var container = document.getElementById("gallery");
+
+    var element = document.createElement("div");
+    element.setAttribute("class","clearfix");
+    element.setAttribute('id','clearFixImage');
+
+    container.appendChild(element);
 }

@@ -33,7 +33,7 @@ namespace TravelService.Controllers
             var dict = HttpContext.Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString());
             foreach (string key in HttpContext.Request.Form.Keys)
             {
-                if (key.Equals("placeIdString")) { placeId = dict[key]; }
+                if (key.Equals("placeId")) { placeId = dict[key]; }
             }
 
 
