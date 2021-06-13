@@ -217,9 +217,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
 	<script>
 		$(document).ready(function () {
-			var userId = localStorage.getItem("userId");
-			var tokenString = localStorage.getItem("token");
+			var userId = sessionStorage.getItem("userId");
 			$("#userId").val(userId);
+			var token_string = sessionStorage.getItem("token");
 
 			// $("#submitButton").click(function () {
 			// 	$("#placeForm").ajaxForm({url: 'https://localhost:49161/api/places', type: 'post'});
@@ -230,16 +230,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			$("#submitButton").click(function () {
 				var form = new FormData($("#placeForm")[0]);
 				$.ajax({
-					url: "https://localhost:5001//api/places",
+					url: "https://localhost:5001/api/places",
 					type: "POST",
-					headers: {Authorization: 'Bearer '+ tokenString},
 					dataType: 'text',
+					headers: {Authorization: 'Bearer '+ token_string},
 					data: form,
 					processData: false,
 					contentType: false,
 					success: function(result){
 						console.log("success");
-						window.location.href = 'index.html';
 					},
 					error: function(er){
 						console.log("failed");

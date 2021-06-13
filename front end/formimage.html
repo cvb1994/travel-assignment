@@ -113,13 +113,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
  				
 				<div style="width: 880px ;margin-left: auto;margin-right: auto;margin-bottom: 47px; margin-top: 47px;">
 					<form method="POST" name="sum" id="imageSubmit" enctype="multipart/form-data">
-						<input type="hidden" id="placeIdString" name="placeIdString"/>
+					
 						<div class="input-field form-group">
 							<label class="active">Photos</label>
 							<div class="input-images-1" name="imageUpload" style="padding-top: .5rem;"></div>
 						</div>
 					     
-						<button type="button" id="submitButton" class="btn btn-primary">Submit</button>
+						<button type="submit" id="submitButton" class="btn btn-primary">Submit</button>
 					
 					</form>
 				</div>
@@ -214,34 +214,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </script>
 <script>
 	$(document).ready(function () {
-		var url_string = window.location + "";
-		var url = new URL(url_string);
-		var placeIdString = url.searchParams.get("placeId");
-		var placeId = Number.parseInt(placeIdString);
-		$("#placeIdString").val(placeId);
-
-		// $("#submitButton").click(function () {
-		// 	$("#imageSubmit").ajaxForm({url: 'https://localhost:49167/api/images/'+placeId, type: 'post'});
-		// 	location.reload();
-		// })
-
 		$("#submitButton").click(function () {
-			var form = new FormData($("#imageSubmit")[0]);
-			$.ajax({
-				url: "https://localhost:5001//api/images",
-				type: "POST",
-				dataType: 'text',
-				data: form,
-				processData: false,
-				contentType: false,
-				success: function(result){
-					console.log("success");
-					window.location.href = 'index.html';
-				},
-				error: function(er){
-					console.log("failed");
-				}
-			});
+			$("#imageSubmit").ajaxForm({url: 'https://localhost:5001/api/images', type: 'post'});
+			location.reload();
 		})
 
 	})

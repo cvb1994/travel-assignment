@@ -115,10 +115,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		
 		<div style="width: 300px ;margin-left: auto;margin-right: auto;margin-bottom: 47px;">
 			
-			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-			  </form>
+			<div class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="search" id="searchTxt" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" id="searchButton" type="button">Search</button>
+			</div>
 		</div>
 		<!-- <div class="header-top" style="float: left; padding-left: 13px;">
 			<input type="text" style="width: 330px;" placeholder="Search" required=" ">
@@ -129,7 +129,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 			<div class="col-md-3 blog-grid">
 				<div class="blog-grid1">
-					<button onclick="location.href='formplace.html'" type="button" class="btn btn-sm btn-block h-100 btn-outline-primary" style="height: 400px;">								
+					<button id="addPlaceButton" type="button" class="btn btn-sm btn-block h-100 btn-outline-primary" style="height: 400px;">								
 						<i style="font-size: 40px;" class="fas fa-plus"></i>
 						<br>
 						<h4>Add New</h2>
@@ -206,7 +206,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</div>
 <!-- //footer -->	
 <!-- here stars scrolling icon -->
-
+	<script type="text/javascript" src="js/view_js/login.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			/*
@@ -224,7 +224,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</script>
 <!-- //here ends scrolling icon -->
 	<script src="js/view_js/index.js"></script>
-	<script type="text/javascript" src="js/view_js/login.js"></script>
 	<script src="https://kit.fontawesome.com/682c484ffe.js" crossorigin="anonymous"></script>
 </body>
 </html>

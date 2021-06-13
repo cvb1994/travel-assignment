@@ -1,5 +1,11 @@
 $(document).ready(function () {
-    console.log("co chay");
+    $('#passConfirm').change(function(){
+        checkPass();
+    })
+    $('#pass').change(function(){
+        checkPass();
+    })
+    
     $('#register').click(function(){
         var name = $('#username').val();
         var password = $('#pass').val();
@@ -20,10 +26,26 @@ $(document).ready(function () {
                 if(responseText === "success"){
                     window.location.href = 'index.html'
                 } else {
-                    $("#Message").removeClass("hiddenField");
-                    $("#Message").text("Username Not Available");
+                    $("#message").removeClass("hiddenField");
+                    $("#message").text("Username Not Available");
                 }
             }
         })
     });
 })
+
+function checkPass(){
+    var password = $('#pass').val();
+    var confirm = $('#passConfirm').val();
+    console.log(password);
+    if(password != confirm){
+        $('#message').text('Password Confirm Is Not Correct!');
+        $('#message').removeClass('hiddenField');
+        $('#register').addClass('disabled');
+    } else {
+        $('#message').text('');
+        $('#message').addClass('hiddenField');
+        $('#register').removeClass('disabled');
+
+    }
+}

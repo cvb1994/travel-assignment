@@ -1,17 +1,23 @@
 $(document).ready(function () {
-    var user = localStorage.getItem('userId');
-    var token_string = localStorage.getItem('token');
+    var user = sessionStorage.getItem('userId');
+    var token_string = sessionStorage.getItem('token');
+    var username = sessionStorage.getItem('username');
+    var userRole = sessionStorage.getItem('role');
 
-    $.ajax({
-        type : "GET",
-        url: "https://localhost:5001/api/users/"+user,
-        //dataType: "json",
-        headers: {Authorization: 'Bearer '+ token_string},
-        success : function(data){
-            var name = data.userName;
-            logined(name);
-        }
-    })
+    // $.ajax({
+    //     type : "GET",
+    //     url: "https://localhost:5001/api/users/"+user,
+    //     //dataType: "json",
+    //     headers: {Authorization: 'Bearer '+ token_string},
+    //     success : function(data){
+    //         var name = data.userName;
+    //         logined(name);
+    //     }
+    // })
+    if(username != null){
+        logined(username);
+    }
+    
 
     $("#logoutbutton").click(function () {
         console.log("logout");
@@ -29,35 +35,23 @@ function logined(name){
     login.remove();
 
     var user = document.createElement("li");
-    user.setAttribute("id","logoutbutton");
-    var href = document.createElement("a");
-    href.innerHTML = name;
+    var user_href = document.createElement("a");
+    user_href.innerHTML = name;
 
-    user.appendChild(href);
+    var logoutButton = document.createElement('li');
+    logoutButton.setAttribute("id","logoutbutton");
+    var logout_href = document.createElement("a");
+    logout_href.setAttribute('href','');
+    logout_href.innerHTML = 'Logout';
+
+    user.appendChild(user_href);
+    logoutButton.appendChild(logout_href);
     contain.appendChild(user);
+    contain.appendChild(logoutButton);
 }
 
 function logout() {
-    var contain = document.getElementById("navBar");
-
-    var register = document.createElement("li");
-    register.setAttribute("id","registerForm");
-    var href1 = document.createElement("a");
-    href1.setAttribute("href","travellerregister.html");
-    href1.innerHTML = "REGISTER";
-    register.appendChild(href1);
-
-    var login = document.createElement("li");
-    login.setAttribute("id","loginForm");
-    var href2 = document.createElement("a");
-    href2.setAttribute("href","login.html");
-    href2.innerHTML = "LOGIN";
-    login.appendChild(href2);
-
-    var user = document.getElementById("logout");
-    user.remove();
-
-    contain.appendChild(register);
-    contain.appendChild(login);
+    sessionStorage.clear();
+    window.location.reload();
 
 }

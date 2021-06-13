@@ -1,21 +1,26 @@
 var url_string = window.location + "";
 var url = new URL(url_string);
-var placeIdString = url.searchParams.get("placeId");
-var placeId = Number.parseInt(placeIdString);
-var userIdString = localStorage.getItem("userId");
-var user = Number.parseInt(userIdString);
+var placeId = url.searchParams.get("placeId");
+var user = sessionStorage.getItem("userId");
+var role = sessionStorage.getItem('role');
+var token_string = sessionStorage.getItem('token');
 
 $(document).ready(function () {
     loadContent();
     loadImage();
+    checkRoleForComment();
     loadComment();
+
+    $('#rating').click(function(){
+        rating();
+    })
 
     $('#sendComment').click(function(){
         var contentData = $('#content').val();
 
         var data = {
             Content : contentData,
-            PlaceId : placeId,
+            PlaceId : Number.parseInt(placeId),
             UserId : Number.parseInt(user)
         }
 
@@ -25,13 +30,10 @@ $(document).ready(function () {
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success : function(responseText){
-                var contain = document.getElementById("contain");
-                while (contain.firstChild) {
-                    contain.removeChild(contain.lastChild);
-                }
-
+                console.log(responseText);
                 loadComment();
             }
+            
         })
     });
 })
@@ -60,6 +62,9 @@ function loadImage() {
                 var imageUrl = obj.imageLink;
                 loadImageModal(imageUrl);
             })
+        },
+        error: function (errormessage){
+            console.log(errormessage.responseText);
         }
     })
 }
@@ -77,12 +82,15 @@ function loadComment() {
 
                 loadCommentModal(name,content);
             })
+        },
+        error: function (errormessage){
+            console.log(errormessage.responseText);
         }
     })
 }
 
 function loadModal(title, info) {
-    $(".sing-img-text1 h3").text(title);
+    $(".sing-img-text1 #title").text(title);
     $(".est").text(info);
 }
 
@@ -141,6 +149,43 @@ function loadCommentModal(name, content){
     contain.appendChild(element);
 }
 
-function loadRating() {
+function checkRoleForComment() {
+    
+    if(role != 'Traveller'){
+        $('#commentText').remove();
+        var mess = document.createElement('h3');
+        mess.innerHTML = "Please sign in to comment.";
 
+        var contain = document.getElementById('commentContain');
+        contain.appendChild(mess);
+
+        $('#ratingForm').remove();
+        $('#ratingContainer h4').text('Please sign in to rate.');
+
+    } 
+}
+
+function rating(){
+    
+    console.log(token_string);
+    var form = new FormData($("#ratingForm")[0]);
+    
+    form.append('placeId',Number.parseInt(placeId));
+    form.append('userId',Number.parseInt(user));
+
+    $.ajax({
+        url: "https://localhost:5001/api/rating",
+        type: "POST",
+        dataType: 'text',
+        headers: {Authorization: 'Bearer '+ token_string},
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function(result){
+            console.log("success");
+        },
+        error: function(er){
+            console.log("failed");
+        }
+    });
 }

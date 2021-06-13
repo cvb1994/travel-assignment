@@ -18,7 +18,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/-->
 	<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300,700,100,400' rel='stylesheet' type='text/css'>
 	<!-- js -->
 	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script src="js/star-rating.js"></script>
 	<!-- //js -->
 	<!-- for-mobile-apps -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -70,11 +69,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					</div>
 					<div class="header-bottom-right" style="width: 400px;">
 						<span class="menu">MENU</span>
-						<ul class="nav1">
-							<li><a href="index.html">HOME</a></li>
+						<ul class="nav1" id="navBar">
+							<li class="cap"><a href="index.html">HOME</a></li>
 							<li><a href="index.html">BLOG</a></li>
-							<li><a href="travellerregister.html">REGISTER</a></li>
-							<li><a href="login.html">LOGIN</a></li>
+							<li id="registerForm"><a href="travellerregister.html">REGISTER</a></li>
+							<li id="loginForm"><a href="login.html">LOGIN</a></li>
 						</ul>
 						<!-- script for menu -->
 						<script>
@@ -127,16 +126,35 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 	<div class="banner-bdy sig">
 		<div class="container">
-			<button><a id="toimage">Add Image</a></button>
 			<div class="single">
 				<div class="sing-img-text">
 					<div class="sing-img-text1">
-						<h3></h3>
+						<h3 id="title"></h3>
 						<p class="est">
 						</p>
 						<div class="gallery gal">
 							<div class="gallery-grids" id="gallery">
-
+								<div class="gallery-grid">
+									<a class="fancybox" href="images/6-.jpg" data-fancybox-group="gallery"><img
+											src="images/6.jpg" class="img-style row6" alt=""><span> </span></a>
+								</div>
+								<div class="gallery-grid1">
+									<a class="fancybox" href="images/8-.jpg" data-fancybox-group="gallery"><img
+											src="images/8.jpg" class="img-style row6" alt=""><span> </span></a>
+								</div>
+								<div class="gallery-grid">
+									<a class="fancybox" href="images/5-.jpg" data-fancybox-group="gallery"><img
+											src="images/5.jpg" class="img-style row6" alt=""><span> </span></a>
+								</div>
+								<div class="gallery-grid1">
+									<a class="fancybox" href="images/9-.jpg" data-fancybox-group="gallery"><img
+											src="images/9.jpg" class="img-style row6" alt=""><span> </span></a>
+								</div>
+								<div class="gallery-grid">
+									<a class="fancybox" href="images/10-.jpg" data-fancybox-group="gallery"><img
+											src="images/10.jpg" class="img-style row6" alt=""><span> </span></a>
+								</div>
+								<div class="clearfix"> </div>
 							</div>
 						</div>
 						<div class="list">
@@ -146,15 +164,32 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<li><a href="#" class="c"> </a></li>
 							</ul>
 						</div>
-						<h4>Click to rate:</h4>
-						<div class='starrr' id='star1'></div>
-						<div>&nbsp;
-							<span class='your-choice-was' style='display: none;'>
-								<h4>Your rating was <span class='choice'></span>.</h4>
-							</span>
+						<div id="ratingContainer">
+							<h4>Click to rate:</h4>
+							<form id="ratingForm" >
+								<fieldset>
+									<span class="star-cb-group" id="rating">
+										<input type="radio" id="rating-5" name="rating1" value="5" />
+										<label for="rating-5">5</label>
+										<input type="radio" id="rating-4" name="rating1" value="4" />
+										<label for="rating-4">4</label>
+										<input type="radio" id="rating-3" name="rating1" value="3" checked="checked" />
+										<label for="rating-3">3</label>
+										<input type="radio" id="rating-2" name="rating1" value="2" />
+										<label for="rating-2">2</label>
+										<input type="radio" id="rating-1" name="rating1" value="1" />
+										<label for="rating-1">1</label>
+										<input type="radio" id="rating-0" name="rating1" value="0" class="star-cb-clear" />
+										<label for="rating-0">0</label>
+									</span>
+								</fieldset>
+							</form>
+
 						</div>
+						
+						
 						<div class="com">
-							<h4>Comments</h4>
+							<h3>Comments</h3>
 							<ul class="media-list" id="contain">
 
 							</ul>
@@ -163,13 +198,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					</div>
 				</div>
 				<div class="clearfix"></div>
-				<div class="leave-a-comment">
+				<div class="leave-a-comment" id="commentContain">
 					<h3>Leave your comment Here</h3>
-					<form>
+					<form id="commentText">
 						<textarea id="content" type="text" onfocus="this.value = '';"
 							onblur="if (this.value == '') {this.value = 'Type Your Comment here...';}"
 							required="">Type Your Comment here...</textarea>
-						<input type="button" value="Add Comment" id="sendComment">
+						<input type="submit" value="Add Comment" id="sendComment">
 					</form>
 				</div>
 			</div>
@@ -255,28 +290,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</script>
 	<!-- //here ends scrolling icon -->
 	<script src="js/starrr.js"></script>
-	<script>
-		$('#star1').starrr({
-			change: function (e, value) {
-				if (value) {
-					$('.your-choice-was').show();
-					$('.choice').text(value);
-				} else {
-					$('.your-choice-was').hide();
-				}
-			}
-		});
-
-		var $s2input = $('#star2_input');
-		$('#star2').starrr({
-			max: 10,
-			rating: $s2input.val(),
-			change: function (e, value) {
-				$s2input.val(value).trigger('input');
-			}
-		});
-	</script>
-	<script type="text/javascript">
+	
+	<!-- <script type="text/javascript">
 		(function (i, s, o, g, r, a, m) {
 			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
 				(i[r].q = i[r].q || []).push(arguments)
@@ -286,20 +301,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 		ga('create', 'UA-39205841-5', 'dobtco.github.io');
 		ga('send', 'pageview');
-	</script>
+	</script> -->
 
 	<script src="js/view_js/detail.js"></script>
-<script>
-	var url_string = window.location + "";
-	var url = new URL(url_string);
-	var placeIdString = url.searchParams.get("placeId");
-	var placeId = Number.parseInt(placeIdString);
-
-	var anchor = document.getElementById("toimage");
-	anchor.setAttribute("href","formimage.html?placeId="+placeId);
-
-</script>
-
+	<script src="js/view_js/login.js"></script>
+	
 </body>
 
 </html>

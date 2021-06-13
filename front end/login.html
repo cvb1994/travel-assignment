@@ -111,7 +111,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
  				
 				<div style="width: 550px ;margin-left: auto;margin-right: auto;margin-bottom: 47px; margin-top: 47px;">
 				<form>
-					<div id="Message" class="alert alert-danger hiddenField" role="alert"></div>
+					<div id="message" class="alert alert-danger hiddenField" role="alert"></div>
 					<div class="form-group">
 						<label for="username">User Name</label>
 						<input type="text" class="form-control" id="username" aria-describedby="username" placeholder="Enter username">
@@ -220,18 +220,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 			$.ajax({
 				type : "post",
-				url: "https://localhost:5001//api/token",
+				url: "https://localhost:5001/api/token",
 				contentType: "application/json; charset=utf-8",
 				data: JSON.stringify(data),
 				success : function(responseToken){
 					var array = responseToken.split("-");
 
-					localStorage.setItem('userId', array[0]);
-					localStorage.setItem('token', array[1]);
+					sessionStorage.setItem('userId', array[0]);
+					sessionStorage.setItem('username', array[1]);
+					sessionStorage.setItem('role', array[2]);
+					sessionStorage.setItem('token', array[3]);
 					window.location.href = 'index.html';
 				},
 				error: function (errormessage) {
-					alert(errormessage.responseText);
+					//alert(errormessage.responseText);
+					$('#message').text('Username Or Password Not Correct!');
+					$('#message').removeClass('hiddenField');
 				}
 			})
 		});

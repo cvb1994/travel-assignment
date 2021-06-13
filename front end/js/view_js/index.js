@@ -1,5 +1,13 @@
-$(document).ready(function () {
+var role = sessionStorage.getItem('role');
 
+$(document).ready(function () {
+    $('#addPlaceButton').click(function(){
+        showAddPlace();
+    })
+
+    $('#searchButton').click(function(){
+        searchPlace();
+    })
 
 })
 
@@ -29,7 +37,7 @@ function loadModel(path, img, title, content, name){
     var container = document.getElementById("contentSection");
 
     var modal_stage1 = document.createElement("div");
-    modal_stage1.setAttribute("class","col-md-3 blog-grid");
+    modal_stage1.setAttribute("class","col-md-3 blog-grid tempContent");
 
     var modal_stage2 = document.createElement("div");
     modal_stage2.setAttribute("class","blog-grid1");
@@ -85,6 +93,52 @@ function clearFixModal(){
 
     var element = document.createElement("div");
     element.setAttribute("class","clearfix");
+    element.setAttribute('id','clearFixContent');
 
     container.appendChild(element);
+}
+
+function showAddPlace(){
+    
+    if(role === 'Guide'){
+        window.location.href = "formplace.html";
+    } else {
+        alert("You are not a Guider. Please sign in with Guide account to add new place.");
+    }
+}
+
+function clearTempContent(){
+    var list = $('.tempContent');
+    for(i=0; i<list.length; i++){
+        list[i].remove();
+    }
+
+    $('#clearFixContent').remove();
+}
+
+function searchPlace(){
+    var search = $('#searchTxt').val();
+    if(search != ""){
+        clearTempContent();
+        $.ajax({
+            type : "GET",
+            url: "https://localhost:5001/api/search/"+search,
+            dataType: "json",
+            success : function(data){
+                $.each(data, function (index, obj) {
+                    var name = obj.placeName;
+                    var title = obj.title;
+                    var info = obj.info;
+                    var image = obj.imageLink;
+                    var id = obj.placeId;
+        
+                    var path = "detail.html?placeId="+id;
+                    console.log(path);
+                    
+                    loadModel(path,image,title,info,name);
+                })
+                clearFixModal();
+            }
+        })
+    } 
 }
