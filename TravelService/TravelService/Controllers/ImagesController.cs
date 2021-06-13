@@ -50,8 +50,9 @@ namespace TravelService.Controllers
                         Images images = new Images();
                         images.ImageLink = base64.ToString();
 
-                        Places place = _context.Places.Find(int.Parse(placeId));
-                        images.Place = place;
+                        //Places place = _context.Places.Find(int.Parse(placeId));
+                        //images.Place = place;
+                        images.PlaceId = int.Parse(placeId);
 
                         _context.Images.Add(images);
                         _context.SaveChanges();

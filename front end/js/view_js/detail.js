@@ -6,8 +6,8 @@ var role = sessionStorage.getItem('role');
 var token_string = sessionStorage.getItem('token');
 
 $(document).ready(function () {
-    loadContent();
-    loadImage();
+    
+    //loadImage();
     checkRoleForComment();
     loadComment();
 
@@ -46,6 +46,9 @@ $(document).ready(function () {
         
     })
 })
+loadContent();
+
+
 
 function loadContent() {
     $.ajax({
@@ -55,14 +58,15 @@ function loadContent() {
         success : function(data){
             var title = data.title;
             var info = data.info;
-            // var imageList = data.images;
-            // console.log(imageList);
+            var imageCover = data.imageLink;
+            $("#banner").attr("style","background: url(data:image/png;base64,"+imageCover+"); background-repeat: no-repeat; background-size: cover;");
+            var imageList = data.imageList;
 
             loadModal(title,info);
-            // $.each(imageList, function (index, obj) {
-            //     var imageUrl = obj.imageLink;
-            //     loadImageModal(imageUrl);
-            // })
+            $.each(imageList, function (index, obj) {
+                var imageUrl = obj;
+                loadImageModal(imageUrl);
+            })
         }
     })
 }
@@ -109,6 +113,7 @@ function loadComment() {
 
 function loadModal(title, info) {
     $(".sing-img-text1 #title").text(title);
+    $(".est")[0].setAttribute("style","white-space: pre-line");
     $(".est").text(info);
 }
 

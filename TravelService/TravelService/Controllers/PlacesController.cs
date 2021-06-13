@@ -32,19 +32,54 @@ namespace TravelService.Controllers
         }
 
         // GET: api/Places/5
+        //[HttpGet("{id}")]
+        //[AllowAnonymous]
+        //public async Task<ActionResult<Places>> GetPlaces(int id)
+        //{
+        //    var places = await _context.Places.FindAsync(id);
+
+        //    if (places == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return places;
+        //}
+
+        //[HttpGet("{id}")]
+        //[AllowAnonymous]
+        //public async Task<ActionResult<Places>> GetPlaces(int id)
+        //{
+        //    var places = await _context.Places.FindAsync(id);
+        //    var images = _context.Images.Where(i => i.PlaceId == id).ToList();
+        //    places.Images = images;
+
+        //    if (places == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return places;
+        //}
+
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<ActionResult<Places>> GetPlaces(int id)
+        public ActionResult<PlaceDTO> GetPlaces(int id)
         {
-            var places = await _context.Places.FindAsync(id);
+            Places places = _context.Places.Find(id);
+            PlaceDTO placeDtO = new PlaceDTO(places.PlaceId, places.PlaceName,places.Title, places.Info, places.ImageLink);
+            var images = _context.Images.Where(i => i.PlaceId == id).Select(i => i.ImageLink).ToList();
+            placeDtO.imageList = images;
 
             if (places == null)
             {
                 return NotFound();
             }
 
-            return places;
+            return placeDtO;
         }
+
+
 
         // PUT: api/Places/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
