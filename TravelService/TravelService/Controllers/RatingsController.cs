@@ -48,7 +48,7 @@ namespace TravelService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        [Authorize(Roles = "Traveller")]
+        [Authorize]
         public async Task<IActionResult> PutRating(int id, Rating rating)
         {
             if (id != rating.RatingId)
@@ -81,16 +81,30 @@ namespace TravelService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [Authorize(Roles = "Traveller")]
-        public async Task<ActionResult> PostRating(Rating rating)
+        [Authorize]
+        public ActionResult<string> PostRating()
         {
-            Places place = _context.Places.Find(rating.PlaceId);
-            rating.Place = place;
-            Users user = _context.Users.Find(rating.UserId);
-            rating.User = user;
+            int rate = 0;
+            int placeId = 0;
+            int userId = 0;
 
-            _context.Rating.Add(rating);
-            await _context.SaveChangesAsync();
+            var dict = HttpContext.Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString());
+            foreach (string key in HttpContext.Request.Form.Keys)
+            {
+                if (key.Equals("rating1")) { rate = int.Parse(dict[key]); }
+                if (key.Equals("placeId")) { placeId = int.Parse(dict[key]); }
+                if (key.Equals("userId")) { userId = int.Parse(dict[key]); }
+            }
+            Places place = _context.Places.Find(placeId);
+            Users user = _context.Users.Find(userId);
+
+            Rating newRate = new Rating();
+            newRate.Rating1 = (short)rate;
+            newRate.Place = place;
+            newRate.User = user;
+            
+            _context.Rating.Add(newRate);
+            _context.SaveChangesAsync();
 
             return Ok("success");
         }

@@ -13,7 +13,7 @@ namespace TravelService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Guide")]
+    [Authorize]
     public class PlacesController : ControllerBase
     {
         private readonly travelContext _context;
@@ -33,7 +33,7 @@ namespace TravelService.Controllers
 
         // GET: api/Places/5
         [HttpGet("{id}")]
-        
+        [AllowAnonymous]
         public async Task<ActionResult<Places>> GetPlaces(int id)
         {
             var places = await _context.Places.FindAsync(id);

@@ -20,11 +20,10 @@ namespace TravelService.Controllers
             _context = context;
         }
 
-        // GET: api/Ratings
         [HttpGet("{search}")]
         public async Task<ActionResult<IEnumerable<Places>>> GetPlaceSearch(string search)
         {
-            return await _context.Places.Where(p => p.Title.Contains(search)).ToListAsync();
+            return await _context.Places.Where(p => p.Title.Contains(search) || p.PlaceName.Contains(search)).ToListAsync();
         }
     }
 }

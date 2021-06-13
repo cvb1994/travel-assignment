@@ -57,7 +57,7 @@ namespace TravelService.Controllers
                         claims, DateTime.UtcNow, DateTime.UtcNow.AddDays(1), signin);
 
                     var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-                    return Ok(user.UserId+"-"+tokenString);
+                    return Ok(user.UserId+"-"+user.UserName+"-"+user.Role.RoleName+"-"+tokenString);
                 }
                 else
                 {

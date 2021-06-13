@@ -12,7 +12,7 @@ namespace TravelService.Controllers
 {
     [Route("api/comment")]
     [ApiController]
-    [Authorize(Roles = "Traveller")]
+    [Authorize]
     public class CommentsController : ControllerBase
     {
         private readonly travelContext _context;
