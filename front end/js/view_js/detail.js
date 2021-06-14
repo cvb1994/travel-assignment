@@ -4,15 +4,22 @@ var placeId = url.searchParams.get("placeId");
 var user = sessionStorage.getItem("userId");
 var role = sessionStorage.getItem('role');
 var token_string = sessionStorage.getItem('token');
+var rateId = 0;
 
 $(document).ready(function () {
     
-    //loadImage();
     checkRoleForComment();
     loadComment();
 
     $('#rating').click(function(){
-        rating();
+        if(rateId == 0){
+            console.log('add new');
+            newRating();
+        } else {
+            console.log('update');
+            updateRating();
+        }
+        
     })
 
     $('#sendComment').click(function(){
@@ -27,6 +34,7 @@ $(document).ready(function () {
         $.ajax({
             type : "POST",
             url: "https://localhost:5001/api/comment",
+            headers: {Authorization: 'Bearer '+ token_string},
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
             success : function(responseText){
@@ -46,8 +54,23 @@ $(document).ready(function () {
         
     })
 })
-loadContent();
 
+loadContent();
+loadRating();
+
+function loadRating() { 
+    $.ajax({
+        type : "GET",
+        url: "https://localhost:5001/api/rating/place/"+placeId+"/"+user,
+        headers: {Authorization: 'Bearer '+ token_string},
+        dataType: "json",
+        success : function(data){
+            var point = data.rating1;
+            showRating(point);
+            rateId = data.ratingId;
+        }
+    })
+ }
 
 
 function loadContent() {
@@ -67,6 +90,7 @@ function loadContent() {
                 var imageUrl = obj;
                 loadImageModal(imageUrl);
             })
+            clearFixModalImage();
         }
     })
 }
@@ -189,7 +213,7 @@ function checkRoleForComment() {
     } 
 }
 
-function rating(){
+function newRating(){
     
     console.log(token_string);
     var form = new FormData($("#ratingForm")[0]);
@@ -198,8 +222,31 @@ function rating(){
     form.append('userId',Number.parseInt(user));
 
     $.ajax({
-        url: "https://localhost:5001/api/rating",
+        url: "https://localhost:5001/api/rating/place",
         type: "POST",
+        dataType: 'text',
+        headers: {Authorization: 'Bearer '+ token_string},
+        data: form,
+        processData: false,
+        contentType: false,
+        success: function(result){
+            console.log("success");
+        },
+        error: function(er){
+            console.log("failed");
+        }
+    });
+}
+
+function updateRating(){
+    var form = new FormData($("#ratingForm")[0]);
+    
+    form.append('placeId',Number.parseInt(placeId));
+    form.append('userId',Number.parseInt(user));
+
+    $.ajax({
+        url: "https://localhost:5001/api/rating/"+rateId,
+        type: "PUT",
         dataType: 'text',
         headers: {Authorization: 'Bearer '+ token_string},
         data: form,
@@ -222,4 +269,21 @@ function clearFixModalImage(){
     element.setAttribute('id','clearFixImage');
 
     container.appendChild(element);
+}
+
+function showRating(point){
+    var list = $('.rating');
+    
+    for(i =0; i <list.length; i++){
+        if(list[i].hasAttribute("checked")){
+            list[i].removeAttribute("checked");
+        }
+    }
+
+    for(i =0; i < list.length; i++){
+        var val = list[i].value;
+        if(val == point){
+            list[i].setAttribute("checked","checked");
+        }
+    }
 }

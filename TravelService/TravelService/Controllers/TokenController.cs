@@ -48,7 +48,7 @@ namespace TravelService.Controllers
                         new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                         new Claim("Id", user.UserId.ToString()),
                         new Claim("Username", user.UserName),
-                        new Claim(ClaimTypes.Role, role.RoleName),
+                        new Claim(ClaimTypes.Role, role.RoleName)
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

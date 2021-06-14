@@ -1261,6 +1261,7 @@ li.active a {
 }
 .blog-grid1{
 	background:#f0f0f0;
+	position: relative;
 }
 .blog-grid1-info{
 	padding:1em;
@@ -1299,9 +1300,15 @@ li.active a {
 	font-style: normal;
 	line-height: 1.7em;
 }
+.red-mre{
+	margin: 1.5em 0 0 1em;
+	display: flex;
+	position: absolute;
+	bottom: 5px;
+}
+
 .red-mre a{
 	text-align: center;
-	margin: 1em 0 0 3em;
 	border: none;
 	color: #9cc303;
 	font-size: 15px;

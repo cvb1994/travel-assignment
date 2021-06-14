@@ -1,4 +1,6 @@
 var role = sessionStorage.getItem('role');
+var userId = sessionStorage.getItem('userId');
+var token_string = sessionStorage.getItem("token");
 
 $(document).ready(function () {
     $('#addPlaceButton').click(function(){
@@ -13,8 +15,9 @@ $(document).ready(function () {
 
 $.ajax({
     type : "GET",
-    url: "https://localhost:5001/api/places",
+    url: "https://localhost:5001/api/places/user/"+userId,
     dataType: "json",
+    headers: {Authorization: 'Bearer '+ token_string},
     success : function(data){
         $.each(data, function (index, obj) {
             var name = obj.placeName;
@@ -73,6 +76,35 @@ function loadModel(path, img, title, content, name, placeId){
     var modal_readmore = document.createElement("div");
     modal_readmore.setAttribute("class", "red-mre row");
 
+    var row1 = document.createElement("div");
+    row1.setAttribute("class","col-md-1");
+
+    var edit = document.createElement("a");
+    edit.setAttribute("href","formplace.html?edit=true&placeId="+placeId);
+
+    var symbolEdit = document.createElement("i");
+    symbolEdit.setAttribute("class","fas fa-edit");
+
+    edit.appendChild(symbolEdit);
+    row1.appendChild(edit);
+
+    var row2 = document.createElement("div");
+    row2.setAttribute("class","col-md-1");
+
+    var deleteButton = document.createElement("a");
+    deleteButton.addEventListener('click', function(){
+        var result = confirm("Want to delete?");
+        if(result){
+            deletePlace(placeId);
+        }
+    });
+
+    var symbolDelete = document.createElement("i");
+    symbolDelete.setAttribute("class","fas fa-trash-alt");
+
+    deleteButton.appendChild(symbolDelete);
+    row2.appendChild(deleteButton);
+
     var row3 = document.createElement("div");
     row3.setAttribute("class","col-md-10");
 
@@ -83,6 +115,8 @@ function loadModel(path, img, title, content, name, placeId){
 
     row3.appendChild(readmore);
 
+    modal_readmore.appendChild(row1);
+    modal_readmore.appendChild(row2);
     modal_readmore.appendChild(row3);
 
     modal_content.appendChild(modal_title);
@@ -139,6 +173,7 @@ function searchPlace(){
                     var id = obj.placeId;
         
                     var path = "detail.html?placeId="+id;
+                    console.log(path);
                     
                     loadModel(path,image,title,info,name);
                 })
@@ -148,3 +183,14 @@ function searchPlace(){
     } 
 }
 
+function deletePlace(placeId){
+    $.ajax({
+        type : "DELETE",
+        url: "https://localhost:5001/api/places/"+placeId,
+        headers: {Authorization: 'Bearer '+ token_string},
+        dataType: "text",
+        success : function(data){
+            window.location.reload();
+        }
+    })
+}

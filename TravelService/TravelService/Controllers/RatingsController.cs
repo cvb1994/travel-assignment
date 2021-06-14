@@ -12,7 +12,7 @@ namespace TravelService.Controllers
 {
     [Route("api/rating")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Traveller")]
     public class RatingsController : ControllerBase
     {
         private readonly travelContext _context;
@@ -24,10 +24,10 @@ namespace TravelService.Controllers
 
         // GET: api/Ratings
         [HttpGet]
-        [Route("place/{placeId}")]
-        public async Task<ActionResult<IEnumerable<Rating>>> GetPlaceRating(int placeId)
+        [Route("place/{placeId}/{userId}")]
+        public async Task<ActionResult<Rating>> GetPlaceRating(int placeId, int userId)
         {
-            return await _context.Rating.Where(r => r.PlaceId == placeId).ToListAsync();
+            return await _context.Rating.Where(r => r.PlaceId == placeId && r.UserId == userId).FirstOrDefaultAsync();
         }
 
         // GET: api/Ratings/5
@@ -49,32 +49,31 @@ namespace TravelService.Controllers
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> PutRating(int id, Rating rating)
+        public ActionResult<string> PutRating(int id)
         {
-            if (id != rating.RatingId)
+            int rate = 0;
+            int placeId = 0;
+            int userId = 0;
+
+            var dict = HttpContext.Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString());
+            foreach (string key in HttpContext.Request.Form.Keys)
             {
-                return BadRequest();
+                if (key.Equals("rating1")) { rate = int.Parse(dict[key]); }
+                if (key.Equals("placeId")) { placeId = int.Parse(dict[key]); }
+                if (key.Equals("userId")) { userId = int.Parse(dict[key]); }
             }
 
-            _context.Entry(rating).State = EntityState.Modified;
+            Rating editRate = _context.Rating.Find(id);
+            if(editRate.UserId != userId) { return BadRequest(); }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RatingExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            editRate.Rating1 = (short)rate;
+            editRate.UserId = userId;
+            editRate.PlaceId = placeId;
 
-            return NoContent();
+            _context.Entry(editRate).State = EntityState.Modified;
+            _context.SaveChangesAsync();
+
+            return Ok("Success");
         }
 
         // POST: api/Ratings

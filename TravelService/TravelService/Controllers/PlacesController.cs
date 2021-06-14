@@ -11,9 +11,9 @@ using TravelService.Models;
 
 namespace TravelService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/places")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles ="Guide")]
     public class PlacesController : ControllerBase
     {
         private readonly travelContext _context;
@@ -31,37 +31,15 @@ namespace TravelService.Controllers
             return await _context.Places.ToListAsync();
         }
 
+        [HttpGet]
+        [Route("user/{id}")]
+        public async Task<ActionResult<IEnumerable<Places>>> GetPlacesByUser(int id)
+        {
+            return await _context.Places.Where(p => p.UserId == id).ToListAsync();
+        }
+
+
         // GET: api/Places/5
-        //[HttpGet("{id}")]
-        //[AllowAnonymous]
-        //public async Task<ActionResult<Places>> GetPlaces(int id)
-        //{
-        //    var places = await _context.Places.FindAsync(id);
-
-        //    if (places == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return places;
-        //}
-
-        //[HttpGet("{id}")]
-        //[AllowAnonymous]
-        //public async Task<ActionResult<Places>> GetPlaces(int id)
-        //{
-        //    var places = await _context.Places.FindAsync(id);
-        //    var images = _context.Images.Where(i => i.PlaceId == id).ToList();
-        //    places.Images = images;
-
-        //    if (places == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return places;
-        //}
-
         [HttpGet("{id}")]
         [AllowAnonymous]
         public ActionResult<PlaceDTO> GetPlaces(int id)
@@ -70,6 +48,7 @@ namespace TravelService.Controllers
             PlaceDTO placeDtO = new PlaceDTO(places.PlaceId, places.PlaceName,places.Title, places.Info, places.ImageLink);
             var images = _context.Images.Where(i => i.PlaceId == id).Select(i => i.ImageLink).ToList();
             placeDtO.imageList = images;
+            placeDtO.UserId = places.UserId;
 
             if (places == null)
             {
@@ -85,32 +64,44 @@ namespace TravelService.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlaces(int id, Places places)
+        public ActionResult<string> PutPlaces(int id)
         {
-            if (id != places.PlaceId)
+            string name = null;
+            string title = null;
+            string info = null;
+            int userId = 0;
+
+            var dict = HttpContext.Request.Form.ToDictionary(x => x.Key, x => x.Value.ToString());
+            foreach (string key in HttpContext.Request.Form.Keys)
             {
-                return BadRequest();
+                if (key.Equals("placeName")) { name = dict[key]; }
+                if (key.Equals("title")) { title = dict[key]; }
+                if (key.Equals("info")) { info = dict[key]; }
+                if (key.Equals("userId")) { userId = int.Parse(dict[key]); }
             }
 
-            _context.Entry(places).State = EntityState.Modified;
+            Places editPlace = _context.Places.Find(id);
+            if(editPlace.UserId != userId) { return BadRequest(); }
 
-            try
+            editPlace.PlaceName = name;
+            editPlace.Title = title;
+            editPlace.Info = info;
+
+            var images = HttpContext.Request.Form.Files;
+            if(images != null && images.Count > 0)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlacesExists(id))
+                foreach (var file in images)
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
+                    Stream filestream = file.OpenReadStream();
+                    var base64 = ConvertToBase64(filestream);
+                    editPlace.ImageLink = base64;
                 }
             }
+            _context.Entry(editPlace).State = EntityState.Modified;
+            _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok("success");
+
         }
 
         // POST: api/Places
@@ -160,16 +151,20 @@ namespace TravelService.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Places>> DeletePlaces(int id)
         {
-            var places = await _context.Places.FindAsync(id);
-            if (places == null)
+            int senderId = 0;
+            var claimList = User.Claims.ToList();
+            foreach(var pro in claimList)
             {
-                return NotFound();
+                if (pro.Type.Equals("Id")) { senderId = int.Parse(pro.Value); break; }
             }
+
+            var places = await _context.Places.FindAsync(id);
+            if (places.UserId != senderId) return BadRequest();
 
             _context.Places.Remove(places);
             await _context.SaveChangesAsync();
 
-            return places;
+            return Ok("success");
         }
 
         private bool PlacesExists(int id)

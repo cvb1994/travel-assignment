@@ -23,7 +23,6 @@ namespace TravelService.Models
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
-        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Comment>(entity =>
@@ -35,18 +34,18 @@ namespace TravelService.Models
                 entity.HasOne(d => d.Place)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.PlaceId)
-                    .HasConstraintName("FK__Comment__PlaceId__7E37BEF6");
+                    .HasConstraintName("FK__Comment__PlaceId__6754599E");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Comment)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Comment__UserId__7F2BE32F");
+                    .HasConstraintName("FK__Comment__UserId__68487DD7");
             });
 
             modelBuilder.Entity<Images>(entity =>
             {
                 entity.HasKey(e => e.ImageId)
-                    .HasName("PK__Images__7516F70C398C1A7C");
+                    .HasName("PK__Images__7516F70C3E841AFF");
 
                 entity.Property(e => e.ImageLink)
                     .IsRequired()
@@ -56,15 +55,16 @@ namespace TravelService.Models
                 entity.HasOne(d => d.Place)
                     .WithMany(p => p.Images)
                     .HasForeignKey(d => d.PlaceId)
-                    .HasConstraintName("FK__Images__PlaceId__7B5B524B");
+                    .HasConstraintName("FK__Images__PlaceId__6477ECF3");
             });
 
             modelBuilder.Entity<Places>(entity =>
             {
                 entity.HasKey(e => e.PlaceId)
-                    .HasName("PK__Places__D5222B6E3C0EF9DF");
+                    .HasName("PK__Places__D5222B6EE4A2AAF1");
 
                 entity.Property(e => e.ImageLink)
+                    .IsRequired()
                     .HasColumnName("Image_link")
                     .HasColumnType("text");
 
@@ -84,7 +84,7 @@ namespace TravelService.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Places)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Places__UserId__787EE5A0");
+                    .HasConstraintName("FK__Places__UserId__619B8048");
             });
 
             modelBuilder.Entity<Rating>(entity =>
@@ -94,12 +94,12 @@ namespace TravelService.Models
                 entity.HasOne(d => d.Place)
                     .WithMany(p => p.Rating)
                     .HasForeignKey(d => d.PlaceId)
-                    .HasConstraintName("FK__Rating__PlaceId__02084FDA");
+                    .HasConstraintName("FK__Rating__PlaceId__6B24EA82");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Rating)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Rating__UserId__02FC7413");
+                    .HasConstraintName("FK__Rating__UserId__6C190EBB");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -113,7 +113,7 @@ namespace TravelService.Models
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__Users__1788CC4CBED9DD0E");
+                    .HasName("PK__Users__1788CC4C96FC6D06");
 
                 entity.Property(e => e.UserName)
                     .IsRequired()
@@ -128,7 +128,7 @@ namespace TravelService.Models
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__Users__RoleId__75A278F5");
+                    .HasConstraintName("FK__Users__RoleId__5EBF139D");
             });
 
             OnModelCreatingPartial(modelBuilder);

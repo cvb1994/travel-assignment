@@ -9,6 +9,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <head>
 <title>Travel Services a Travel Agency Category Flat Bootstarp Resposive Website Template</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<link href="css/all.css" rel="stylesheet" type="text/css" media="all" />
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:300,700,100,400' rel='stylesheet' type='text/css'>
@@ -90,50 +91,59 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				          $('.events').append("<li>after event fired.</li>");
 				        }
 				      });
-				
+
 				    });
 				  </script>
 			<!--//End-slider-script -->
 			
-	</div>
+		</div>
 	</div>
 <!-- //banner -->
 <!-- banner-bottom -->
 
 	<!-- blog -->
-    <div class="banner-bdy blg">
-		<div class="container">
-			<div class="blog">
-                <div style="width: 230px ;margin-left: auto;margin-right: auto;margin-bottom: 47px; margin-top: 47px;">
-					<h2>Add Place</h2>
-					<p>Enter Place info to the form below.</p>
-				</div>
- 				
-				<div style="width: 769px ;margin-left: auto;margin-right: auto;margin-bottom: 47px; margin-top: 47px;">
-				<form id="placeForm" method="POST" enctype="multipart/form-data">
-					<input type="hidden" id="userId" name="userId"/>
-					<div class="form-group">
-					  <label for="Placename">Place Name</label>
-					  <input type="text" class="form-control" id="placeName"  name="placeName" placeholder="Enter Place name">
-					</div>
-					<div class="form-group">
-					  <label for="title">Title</label>
-					  <input type="text" class="form-control" id="title" name="title" placeholder="Title">
-					</div>				
-					<div class="form-group">
-						<label for="info">Info</label>
-						<textarea class="form-control" id="info" name="info" placeholder="Place info" rows="12" cols="40"></textarea>
-					  </div>
-					  <div class="form-group">
-						<label for="Placeimage">Image Cover</label>
-						<input type="file" class="form-control" id="Placeimage" name="image">
-					  </div>
-					<button type="button" id="submitButton" class="btn btn-primary">Submit</button>
-				  </form>
-				</div>
-			</div>
+<div class="banner-bdy blg">
+	<div class="container">
+	<div class="blog">
 		
+		<div style="width: 800px ;margin-left: auto;margin-right: auto;margin-bottom: 47px;">
+			<h2>Blog</h2>
+		<p class="gal-txt">Nam libero tempore, cum soluta nobis est eligendi optio 
+		cumque nihil impedit quo minus id quod maxime placeat facere possimus,
+		omnis voluptas assumenda est, omnis dolor repellendus.</p>
 		</div>
+		
+		
+		<div style="width: 300px ;margin-left: auto;margin-right: auto;margin-bottom: 47px;">
+			
+			<div class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="search" id="searchTxt" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" id="searchButton" type="button">Search</button>
+			</div>
+		</div>
+		<!-- <div class="header-top" style="float: left; padding-left: 13px;">
+			<input type="text" style="width: 330px;" placeholder="Search" required=" ">
+		</div>
+		<div class="clearfix"> </div> -->
+		
+		<div class="blog-grids" id="contentSection">
+
+			<div class="col-md-3 blog-grid">
+				<div class="blog-grid1">
+					<button id="addPlaceButton" type="button" class="btn btn-sm btn-block h-100 btn-outline-primary" style="height: 400px;">								
+						<i style="font-size: 40px;" class="fas fa-plus"></i>
+						<br>
+						<h4>Add New</h2>
+					</button>				
+				</div>			
+			</div>
+			
+			
+
+		</div>
+
+	</div>
+	</div>
 	</div>
 <!-- //blog -->
 <!-- //slider -->
@@ -198,6 +208,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</div>
 <!-- //footer -->	
 <!-- here stars scrolling icon -->
+	<script type="text/javascript" src="js/view_js/login.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			/*
@@ -213,86 +224,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								
 			});
 	</script>
-	<script type="text/javascript" src="js/view_js/login.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
-	<script>
-		var url_string = window.location + "";
-		var url = new URL(url_string);
-		var editCheck = url.searchParams.get("edit");
-		var placeId = url.searchParams.get("placeId");
-		var userId = sessionStorage.getItem("userId");
-		var token_string = sessionStorage.getItem("token");
-		
-		if(editCheck === "true"){
-			$.ajax({
-			type : "GET",
-			url: "https://localhost:5001/api/places/"+placeId,
-			dataType: "json",
-			success : function(data){
-				var name = data.placeName;
-				var title = data.title;
-				var info = data.info;
-				var userOwner = data.userId;
-
-				console.log(info);
-
-				if(userOwner != userId){
-					window.location.href = "index.html";
-				} else {
-					$('#placeName').val(name);
-					$('#title').val(title);
-					$('#info').val(info);
-				}
-			}
-		})
-		}
-
-
-		$(document).ready(function () {
-			$("#userId").val(userId);
-
-			$("#submitButton").click(function () {
-				var form = new FormData($("#placeForm")[0]);
-				if(editCheck === "true"){
-					$.ajax({
-						url: "https://localhost:5001/api/places/"+placeId,
-						type: "PUT",
-						dataType: 'text',
-						headers: {Authorization: 'Bearer '+ token_string},
-						data: form,
-						processData: false,
-						contentType: false,
-						success: function(result){
-							console.log("success");
-							window.location.href = "index.html";
-						},
-						error: function(er){
-							console.log("failed");
-						}
-					});
-				} else {
-					$.ajax({
-						url: "https://localhost:5001/api/places",
-						type: "POST",
-						dataType: 'text',
-						headers: {Authorization: 'Bearer '+ token_string},
-						data: form,
-						processData: false,
-						contentType: false,
-						success: function(result){
-							console.log("success");
-							window.location.href = "index.html";
-						},
-						error: function(er){
-							console.log("failed");
-						}
-					});
-				}
-			})
-
-
-		})
-	</script>
 <!-- //here ends scrolling icon -->
+	<script src="js/view_js/myPlace.js"></script>
+	<script src="https://kit.fontawesome.com/682c484ffe.js" crossorigin="anonymous"></script>
 </body>
 </html>

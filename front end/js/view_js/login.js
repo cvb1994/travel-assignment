@@ -1,19 +1,9 @@
-$(document).ready(function () {
-    var user = sessionStorage.getItem('userId');
-    var token_string = sessionStorage.getItem('token');
-    var username = sessionStorage.getItem('username');
-    var userRole = sessionStorage.getItem('role');
+var user = sessionStorage.getItem('userId');
+var token_string = sessionStorage.getItem('token');
+var username = sessionStorage.getItem('username');
+var userRole = sessionStorage.getItem('role');
 
-    // $.ajax({
-    //     type : "GET",
-    //     url: "https://localhost:5001/api/users/"+user,
-    //     //dataType: "json",
-    //     headers: {Authorization: 'Bearer '+ token_string},
-    //     success : function(data){
-    //         var name = data.userName;
-    //         logined(name);
-    //     }
-    // })
+$(document).ready(function () {
     if(username != null){
         logined(username);
     }
@@ -36,6 +26,9 @@ function logined(name){
 
     var user = document.createElement("li");
     var user_href = document.createElement("a");
+    if(userRole === "Guide"){
+        user_href.setAttribute("href","myPlace.html");
+    }
     user_href.innerHTML = name;
 
     var logoutButton = document.createElement('li');

@@ -15,7 +15,7 @@ namespace TravelService.Controllers
 {
     [Route("api/images")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles ="Guide")]
     public class ImagesController : ControllerBase
     {
         public IHostingEnvironment hostingEnvironment;
