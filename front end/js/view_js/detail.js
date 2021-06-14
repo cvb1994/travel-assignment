@@ -11,7 +11,7 @@ $(document).ready(function () {
     checkRoleForComment();
     loadComment();
 
-    $('#rating').click(function(){
+    $('.rating').click(function(){
         if(rateId == 0){
             console.log('add new');
             newRating();
